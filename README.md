@@ -1,10 +1,10 @@
-# FedRD: Communication-Efficient Federated Risk Difference Estimation for Time-to-Event Clinical Outcomes
+# Communication-efficient distributed hazard difference estimation for heterogeneous multi-site survival data
 
 [![arXiv](https://img.shields.io/badge/arXiv-2601.14609-b31b1b.svg)](https://arxiv.org/abs/2601.14609)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![Language](https://img.shields.io/badge/Language-R-blue.svg)](https://www.r-project.org/)
 
-This repository contains the official R implementation for **FedRD**, a communication-efficient, server-independent federated learning framework designed for absolute risk assessment in privacy-restricted, multi-site time-to-event (survival) data.
+This repository contains the official R implementation for **DiSAH**, a communication-efficient, server-independent federated learning framework designed for absolute risk assessment in privacy-restricted, multi-site time-to-event (survival) data.
 
 ---
 
@@ -14,12 +14,12 @@ Traditional privacy-preserving multi-site training frameworks suffer from two fu
 1. **Architectural Constraints:** Iterative frameworks (such as FedAvg) require persistent external connections to a central coordinator, which are routinely blocked by rigid hospital firewalls.
 2. **Clinical Interpretability:** Most survival models focus on relative effect measures (like hazard ratios from the Cox model), which lack direct clinical interpretability for absolute survival risk assessment.
 
-**FedRD** addresses these gaps by using an **additive risks model** tailored for right-censored survival data. It enables multi-site absolute risk difference estimation while keeping patient-level data secure and strictly localized.
+**DiSAH** addresses these gaps by using an **additive risks model** tailored for right-censored survival data. It enables multi-site absolute risk difference estimation while keeping patient-level data secure and strictly localized.
 
 ### 🌟 Key Features
 * **Minimal Communication:** Requires only **1 round** of summary statistics exchange for the stratified model and **3 rounds** for the unstratified model.
 * **Server-Independent:** Eliminates the need for a persistent central server orchestration—making it highly compatible with isolated hospital networks.
-* **Statistical Inference:** Unlike SGD-driven FL frameworks, FedRD provides valid **confidence intervals** and **hypothesis testing**.
+* **Statistical Inference:** Unlike SGD-driven FL frameworks, DiSAH provides valid **confidence intervals** and **hypothesis testing**.
 * **Theoretical Guarantees:** Proven to be asymptotically equivalent to pooled individual-level analysis (the "gold standard" where data is centralized).
 
 ---
@@ -44,7 +44,7 @@ Traditional privacy-preserving multi-site training frameworks suffer from two fu
 
 ## 🚀 Prerequisites & Installation
 
-FedRD is written entirely in **R**. Make sure you have R installed (version ≥ 4.0 recommended).
+DiSAH is written entirely in **R**. Make sure you have R installed (version ≥ 4.0 recommended).
 
 ### Required R Packages
 Open your R console and run the following command to install the required dependencies:
@@ -61,7 +61,7 @@ We provide a complete walk-through demo in `demo.R` using simulated mock data to
 
 ### Step 1: Clone the Repository
 ```bash
-git clone [https://github.com/siqili0325/FedRD.git](https://github.com/siqili0325/FedRD.git)
+git clone [https://github.com/siqili0325/DiSAH.git](https://github.com/siqili0325/DiSAH.git)
 cd FedRD
 ```
 
@@ -82,12 +82,12 @@ source("src/fedrd_unstratified.R")
 # (In practice, this step represents summary statistics loaded from separate hospitals)
 site_data_list <- readRDS("data/mock_site_data.rds")
 
-# 2. Fit Stratified FedRD (Only 1 round of summary statistics exchange)
+# 2. Fit Stratified method (Only 1 round of summary statistics exchange)
 stratified_results <- fedrd_stratified(site_data_list)
 print(stratified_results$coefficients)
 print(stratified_results$confidence_intervals)
 
-# 3. Fit Unstratified FedRD (3 rounds of communication)
+# 3. Fit Unstratified method (3 rounds of communication)
 unstratified_results <- fedrd_unstratified(site_data_list)
 print(unstratified_results$coefficients)
 ```
@@ -99,7 +99,7 @@ print(unstratified_results$coefficients)
 To reproduce the simulation tables and figures presented in Section 4 of our paper:
 
 1. Navigate to the `simulation/` directory.
-2. Run the benchmarking pipeline to compare FedRD against local training and the centralized gold standard:
+2. Run the benchmarking pipeline to compare against local training and the centralized gold standard:
    ```bash
    Rscript simulation/run_simulations.R
    ```
@@ -112,7 +112,7 @@ If you find our framework or code useful for your research, please consider citi
 
 ```bibtex
 @article{wang2026fedrd,
-  title={Communication-Efficient Federated Risk Difference Estimation for Time-to-Event Clinical Outcomes},
+  title={Communication-efficient distributed hazard difference estimation for heterogeneous multi-site survival data},
   author={Wang, Ziwen and Li, Siqi and Ong, Marcus Eng Hock and Liu, Nan},
   journal={arXiv preprint arXiv:2601.14609},
   year={2026}
